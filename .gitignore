@@ -1,0 +1,17 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Python cache and virtual environment
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local database files
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# Temporary files
+*.log
