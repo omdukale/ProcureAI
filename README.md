@@ -4,33 +4,62 @@ ProcureAI is an AI-powered procurement assistant built using Python, the OpenAI 
 
 ## Features
 
-- **Product Discovery:** Search for products using natural-language requests.
-- **Inventory Management:** Check stock availability before purchasing.
-- **Alternative Recommendations:** Find alternative products when requested quantities exceed available stock.
-- **Policy Validation:** Check procurement policies and spending limits.
-- **Human-in-the-Loop Approval:** Route purchases requiring approval to a human for approval or rejection.
-- **Purchase Tracking:** Retrieve purchase statuses and purchase history.
-- **Database Integration:** Store product, vendor, inventory, and purchase information in SQLite.
+- Natural-language product search
+- Inventory availability checking
+- Alternative product recommendations when stock is insufficient
+- Procurement policy validation
+- Automatic approval for purchases within configured limits
+- Human-in-the-loop approval for high-value purchases
+- Purchase status and history tracking
+- SQLite-based data persistence
 
-## Tech Stack
+## Architecture
 
-- Python
-- OpenAI Agents SDK
-- SQLite
-- python-dotenv
-- uv
+ProcureAI uses an AI agent built with the OpenAI Agents SDK to interpret user requests and decide which tools to invoke.
+
+The agent interacts with Python function tools responsible for product search, inventory checks, policy validation, alternative discovery, and purchase management. These tools connect to a SQLite database containing product, vendor, policy, and purchase request data.
+
+Business-critical decisions such as inventory validation and approval limits are handled deterministically through Python logic. Purchases exceeding the configured limit require human approval before the final status is recorded.
+
+## Design Decisions
+
+- **Agent-based orchestration:** The AI agent handles natural-language understanding and tool selection.
+- **Tool-based execution:** Database operations and business rules are handled through Python tools for reliability.
+- **Human oversight:** High-value purchases require approval to prevent unauthorized actions.
+- **Database-backed workflow:** SQLite stores procurement data and maintains purchase history.
 
 ## Setup
 
-1. Clone this repository.
-2. Install Python 3.12 or later.
-3. Install the dependencies listed in `pyproject.toml`.
-4. Create a `.env` file and add your OpenAI API key:
+Clone the repository:
 
-   `OPENAI_API_KEY=your_api_key_here`
+```bash
+git clone https://github.com/omdukale/ProcureAI.git
+cd ProcureAI
+```
 
-5. Initialize the database and populate the sample data using the project's setup scripts.
-6. Run the application using the configured Python environment.
+Install dependencies:
+
+```bash
+uv sync
+```
+
+Create a `.env` file:
+
+```env
+OPENAI_API_KEY=your_api_key_here
+```
+
+Initialize the database:
+
+```bash
+python seed.py
+```
+
+Run the application:
+
+```bash
+python agent.py
+```
 
 ## Notes
 
